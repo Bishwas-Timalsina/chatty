@@ -1,1 +1,28 @@
 @import "tailwindcss";
+@import "@fontsource-variable/jetbrains-mono";
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    font-family: "JetBrains Mono Variable", monospace;
+  }
+}
+
+@theme {
+  --color-primary: #1a1a1a;
+  --color-secondary: #f2f2f3;
+  --color-accent: rgb(247, 94, 94);
+}
+
+.layout {
+  @apply min-h-screen w-full bg-primary text-secondary;
+}
+.layout-div {
+  @apply w-full;
+}
+
+.component-padding {
+  @apply lg:py-[35px] py-[75px] lg:px-20 px-6;
+}
