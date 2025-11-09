@@ -1,4 +1,4 @@
-import React from "react";
+ 
 import Text from "../../../components/Atomic/Text";
 import ContactForm from "./ContactForm";
 import Lottie from "lottie-react";

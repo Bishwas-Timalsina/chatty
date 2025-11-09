@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Text from "../Atomic/Text";
 import { Menu, X } from "lucide-react";
