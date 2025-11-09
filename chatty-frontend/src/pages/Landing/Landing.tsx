@@ -1,10 +1,12 @@
-import React from "react";
+import Banner from "../Home/Banner";
+import HeroSection from "../Home/HeroSection";
 
 const Landing = () => {
   return (
     <>
       <div className="layout">
-        this is the landing page
+        <HeroSection />
+        <Banner />
       </div>
     </>
   );

@@ -1,29 +1,36 @@
 import React from "react";
 
 interface ITextProps {
-  content?: string;
+  content?: React.ReactNode;
   size?: string;
   weight?: string;
   color?: string;
   lineHeight?: string;
   className?: string;
+  children?: React.ReactNode; // ✅ allow children
 }
 
-const Text = (props: ITextProps) => {
-  const { size, weight, content, lineHeight = "24px", className } = props;
+const Text: React.FC<ITextProps> = ({
+  size,
+  weight,
+  color,
+  content,
+  lineHeight = "24px",
+  className,
+  children,
+}) => {
   return (
-    <>
-      <div
-        style={{
-          fontSize: size,
-          fontWeight: weight,
-          lineHeight: lineHeight,
-        }}
-        className={`${className}`}
-      >
-        {content}
-      </div>
-    </>
+    <div
+      style={{
+        fontSize: size,
+        fontWeight: weight,
+        color: color,
+        lineHeight: lineHeight,
+      }}
+      className={className}
+    >
+      {children || content}
+    </div>
   );
 };
 
