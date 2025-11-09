@@ -7,7 +7,7 @@ import App from "../pages/App/App";
 import NotFound from "../pages/NotFound/NotFound";
 import Landing from "../pages/Landing/Landing";
 import AboutUs from "../pages/Landing/AboutUs";
-import ContactUs from "../pages/Landing/ContactUs";
+import ContactUs from "../pages/Landing/ContactUs/ContactUs";
 
 export const AuthRoutes: RouteObject = {
   path: INTRO,
