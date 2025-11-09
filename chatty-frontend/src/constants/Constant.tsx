@@ -1,4 +1,4 @@
-import { Clock, Shield, Video } from "lucide-react";
+import { Clock, Heart, Shield, Users, Video } from "lucide-react";
 
 export const Intro = {
   intro: (
@@ -29,3 +29,28 @@ export const features = [
     desc: "Your conversations stay private with end-to-end encryption and secure data protection — only you control your information.",
   },
 ];
+
+export const About_US = {
+  companyName: "Chatty",
+  tagline: "We build meaningful conversations.",
+  description:
+    "Chatty connects you with the people who matter — instantly, securely, and with delightful design. Our focus is speed, privacy, and simplicity so you can spend less time managing apps and more time talking to friends and teammates.",
+  ctaText: "Join Us",
+  cards: [
+    {
+      title: "Our promise",
+      subtitle: "Privacy first",
+      description:
+        "End-to-end encryption, no surprise tracking, and data that stays yours.",
+      icon: <Heart className="w-6 h-6 text-accent" />,
+      bg: "bg-white",
+    },
+    {
+      title: "Trusted by",
+      subtitle: "Millions of users",
+      description: "With 99.99% uptime, Chatty is reliable and always ready.",
+      icon: <Users className="w-6 h-6 text-accent" />,
+      bg: "bg-white",
+    },
+  ],
+};

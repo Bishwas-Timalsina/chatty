@@ -5,7 +5,7 @@ import Text from "../Atomic/Text";
 
 const Footer = () => {
   return (
-    <footer className="bg-primary text-center py-16">
+    <footer className="bg-black text-center py-16">
       <div className="max-w-6xl mx-auto mb-10 flex justify-center items-center gap-4 flex-col">
         <Text
           content={<>Stay connected with the people who matter most.</>}
