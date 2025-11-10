@@ -1,5 +1,3 @@
- 
-
 const ProtectedRoute = () => {
   return (
     <div className="layout">
