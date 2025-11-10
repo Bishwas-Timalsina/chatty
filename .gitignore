@@ -9,6 +9,8 @@ chatty-backend/dist/
 # Ignore log files
 *.log
 
+chatty-backend/.env/
+
 # Ignore environment files
 chatty-frontend/.env
 chatty-backend/.env
