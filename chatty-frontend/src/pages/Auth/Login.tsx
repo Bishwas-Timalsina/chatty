@@ -37,7 +37,7 @@ const Login = () => {
     }, 3000);
   };
 
-  const { isLoading, error, postData } = usePostData();
+  const { isLoading,error, postData } = usePostData();
   const onSubmit = async (data: LoginFormInputs) => {
     const endPoint = "auth/login";
     try {
@@ -49,6 +49,12 @@ const Login = () => {
           localStorage?.setItem("AUTH_TOKEN", authenticationToken);
         }
         navigate(`/${APP}`);
+      } else {
+        const errorMessage =
+          response?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong";
+        showNotification(errorMessage, "error");
       }
     } catch (error: any) {
       showNotification(error, "error");
