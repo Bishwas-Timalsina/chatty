@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+import { SocketProvider } from "../context/SocketProvider";
 
 const ProtectedRoute = () => {
   const AUTH_TOKEN = localStorage?.getItem("AUTH_TOKEN");
@@ -7,9 +8,11 @@ const ProtectedRoute = () => {
     return <Navigate to="/" replace />;
   }
   return (
-    <div className="layout">
-      <div className="layout-div">Protected Route</div>
-    </div>
+    <SocketProvider>
+      <div className="layout">
+        <div className="layout-div">Protected Route</div>
+      </div>
+    </SocketProvider>
   );
 };
 
