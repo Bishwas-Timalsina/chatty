@@ -8,9 +8,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage?.getItem("AUTH_TOKEN");
-    const socket = io("http://localhost:3000", {
+    const socket = io("http://localhost:8000", {
       auth: { token },
-      transports: ["websockets"],
+      transports: ["websocket"],
     });
     socketRef.current = socket;
 

@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { SocketProvider } from "../context/SocketProvider";
 
 const ProtectedRoute = () => {
@@ -10,7 +10,7 @@ const ProtectedRoute = () => {
   return (
     <SocketProvider>
       <div className="layout">
-        <div className="layout-div">Protected Route</div>
+        <div className="layout-div">Protected Route{<Outlet />}</div>
       </div>
     </SocketProvider>
   );
