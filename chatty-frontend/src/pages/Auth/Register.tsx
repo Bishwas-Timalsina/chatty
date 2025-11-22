@@ -1,13 +1,17 @@
-import Text from "../../components/Atomic/Text";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema } from "../../schema/Schema";
-import type { RegisterFormInputs } from "../../Interface/Interface";
-import { StyledInput } from "../../Styled/Styled";
-import { useNavigate } from "react-router-dom";
-import usePostData from "../../hooks/usePostData";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import Text from "../../components/Atomic/Text";
+import usePostData from "../../hooks/usePostData";
+import { StyledInput } from "../../Styled/Styled";
+import { registerSchema } from "../../schema/Schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Notification from "../../components/Global/Notificatin";
+import type {
+  NotificationProps,
+  RegisterFormInputs,
+} from "../../Interface/Interface";
+import { APP } from "../../config/path";
 
 const Register = () => {
   const {
@@ -19,18 +23,13 @@ const Register = () => {
     resolver: zodResolver(registerSchema),
   });
 
-
-  const [notif, setNotif] = useState<{
-    open: boolean;
-    message: string;
-    severity: "success" | "error";
-  }>({
+  const [notif, setNotif] = useState<NotificationProps>({
     open: false,
     message: "",
     severity: "success",
   });
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { isLoading, error, postData } = usePostData();
 
   const showNotification = (message: string, severity: "success" | "error") => {
@@ -45,8 +44,14 @@ const Register = () => {
     try {
       const response = await postData(endPoint, data);
       if (response?.status === 200) {
+        const authenticationToken = response?.data?.accessToken;
+        if (authenticationToken) {
+          localStorage?.setItem("AUTH_TOKEN", authenticationToken);
+        }
         showNotification("User Registered Successfully", "success");
-        reset();
+
+        console.log(response);
+        navigate(`/${APP}`);
       } else {
         const errorMessage =
           response?.response?.data?.message ||

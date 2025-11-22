@@ -20,5 +20,5 @@ export interface NotificationProps {
   message: string;
   severity: AlertColor;
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
 }
