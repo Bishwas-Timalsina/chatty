@@ -3,91 +3,145 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../../schema/Schema";
 import type { RegisterFormInputs } from "../../Interface/Interface";
+import { StyledInput } from "../../Styled/Styled";
+import { useNavigate } from "react-router-dom";
+import usePostData from "../../hooks/usePostData";
+import { useState } from "react";
+import Notification from "../../components/Global/Notificatin";
 
 const Register = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<RegisterFormInputs>({
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = (data: RegisterFormInputs) => {
-    console.log("Register data:", data);
+
+  const [notif, setNotif] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error";
+  }>({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
+  // const navigate = useNavigate();
+  const { isLoading, error, postData } = usePostData();
+
+  const showNotification = (message: string, severity: "success" | "error") => {
+    setNotif({ open: true, message, severity });
+    setTimeout(() => {
+      setNotif({ open: false, message: "", severity: "success" });
+    }, 3000);
+  };
+
+  const onSubmit = async (data: RegisterFormInputs) => {
+    const endPoint = "auth/register";
+    try {
+      const response = await postData(endPoint, data);
+      if (response?.status === 200) {
+        showNotification("User Registered Successfully", "success");
+        reset();
+      } else {
+        const errorMessage =
+          response?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong";
+        showNotification(errorMessage, "error");
+      }
+    } catch (error: any) {
+      showNotification(error, "error");
+      reset();
+    }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="bg-white p-6 rounded-xl shadow-md space-y-4"
-    >
-      <div>
-        <Text
-          content="Full Name"
-          className="text-sm font-medium text-gray-700"
-        />
-        <input
-          type="text"
-          {...register("name")}
-          className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-accent outline-none"
-        />
-        {errors.name && (
-          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-        )}
-      </div>
-
-      <div>
-        <Text content="Email" className="text-sm font-medium text-gray-700" />
-        <input
-          type="email"
-          {...register("email")}
-          className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-accent outline-none"
-        />
-        {errors.email && (
-          <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-        )}
-      </div>
-
-      <div>
-        <Text
-          content="Password"
-          className="text-sm font-medium text-gray-700"
-        />
-        <input
-          type="password"
-          {...register("password")}
-          className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-accent outline-none"
-        />
-        {errors.password && (
-          <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
-        )}
-      </div>
-
-      <div>
-        <Text
-          content="Confirm Password"
-          className="text-sm font-medium text-gray-700"
-        />
-        <input
-          type="password"
-          {...register("confirmPassword")}
-          className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-accent outline-none"
-        />
-        {errors.confirmPassword && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.confirmPassword.message}
-          </p>
-        )}
-      </div>
-
-      <button
-        type="submit"
-        className="w-full bg-accent text-white py-2 rounded-md font-semibold hover:bg-accent/80 transition"
+    <div>
+      <Notification
+        open={notif.open}
+        message={notif.message}
+        severity={notif.severity}
+        onClose={() => setNotif({ ...notif, open: false })}
+      />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        autoComplete="off"
+        className="bg-white p-6 rounded-xl shadow-md space-y-4"
       >
-        Register
-      </button>
-    </form>
+        <div>
+          <Text
+            content="Full Name"
+            className="text-sm font-medium text-gray-700"
+          />
+          <StyledInput type="text" {...register("fullName")} />
+          {errors.fullName && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.fullName.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <Text content="Email" className="text-sm font-medium text-gray-700" />
+          <StyledInput type="email" {...register("email")} />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
+        </div>
+        <div>
+          <Text
+            content="Contact Number"
+            className="text-sm font-medium text-gray-700"
+          />
+          <StyledInput type="text" {...register("contactNumber")} />
+          {errors.contactNumber && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.contactNumber.message}
+            </p>
+          )}
+        </div>
+        <div className="grid grid-cols-12 gap-4">
+          <div className="col-span-6">
+            <Text
+              content="Password"
+              className="text-sm font-medium text-gray-700"
+            />
+            <StyledInput type="password" {...register("password")} />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <div className="col-span-6">
+            <Text
+              content="Confirm Password"
+              className="text-sm font-medium text-gray-700"
+            />
+            <StyledInput type="password" {...register("confirmPassword")} />
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.confirmPassword.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full bg-accent text-white py-2 rounded-md font-semibold hover:bg-accent/80 transition"
+        >
+          {isLoading ? "Registering..." : "Register"}
+        </button>
+      </form>
+    </div>
   );
 };
 

@@ -19,7 +19,7 @@ const errorHandler = (
 
   if (err.code === 11000) {
     const field = Object.keys(err.keyValue)[0];
-    message = `Duplicate value for field: ${field}`;
+    message = `This email has been registered Previously, Try Again!!!`;
   }
 
   if (err.name === "CastError") {

@@ -1,16 +1,22 @@
+import http from "http";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+// import { initSocket } from "./websocket/socket";
 
-import authRouter from "./modules/auth/auth.routes";
-import appAuth from "./middleware/appAuth";
-import userRouter from "./modules/user/user.routes";
 import mongoose from "mongoose";
+import appAuth from "./middleware/appAuth";
+import authRouter from "./modules/auth/auth.routes";
+import userRouter from "./modules/user/user.routes";
 
-const app = express();
 dotenv.config();
-app.use(cors());
+const app = express();
+const PORT = process.env.PORT_NO || 8000;
+const server = http.createServer(app);
 
+// initSocket(server);
+app.use(cors());
+app.use(express.json({ limit: "2000000000b" }));
 
 mongoose
   .connect(process.env.DB_URL!, {})
@@ -23,14 +29,16 @@ mongoose
 
 import "./models/userRegisterModel";
 import errorHandler from "./handlers/errorHandlers";
+// import messageRouter from "./modules/message/message.routes";
 
-app.use(express.json({ limit: "2000000000b" }));
 app.use("/api/v1/auth", authRouter);
 app.use(appAuth);
 app.use("/api/v1/user", userRouter);
+// app.use("/api/v1/message", messageRouter);
+
 // app.use("/api/v1/message", userMessageRouter);
 
 app.use(errorHandler);
-app.listen(process.env.PORT_NO, () => {
+server.listen(PORT, () => {
   console.log("Server started");
 });

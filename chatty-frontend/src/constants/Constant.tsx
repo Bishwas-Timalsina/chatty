@@ -54,3 +54,7 @@ export const About_US = {
     },
   ],
 };
+
+export const CONSTANTS = {
+  BASE_URL: "http://localhost:8000/api/v1",
+};

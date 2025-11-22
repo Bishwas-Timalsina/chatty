@@ -11,8 +11,9 @@ export const loginSchema = z.object({
 });
 export const registerSchema = z
   .object({
-    name: z.string().min(2, "Name is too short"),
-    email: z.string().email("Invalid email address"),
+    fullName: z.string().min(1, "Full Name cannot be empty").trim(),
+    email: z.string().email("Invalid email address").trim().toLowerCase(),
+    contactNumber: z.string().regex(/^[0-9]{10,15}$/, "Invalid phone number"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().min(6, "Confirm your password"),
   })

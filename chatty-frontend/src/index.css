@@ -15,6 +15,11 @@
   --color-secondary: #f2f2f3;
   --color-accent: rgb(247, 94, 94);
 }
+:root {
+  --color-primary: #1a1a1a;
+  --color-secondary: #f2f2f3;
+  --color-accent: rgb(247, 94, 94);
+}
 
 .layout {
   @apply min-h-screen w-full bg-primary text-secondary;
