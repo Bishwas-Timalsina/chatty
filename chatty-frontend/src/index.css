@@ -27,6 +27,9 @@
 .layout-div {
   @apply w-full;
 }
+.component-padding-x {
+  @apply lg:px-20 px-6;
+}
 
 .component-padding {
   @apply lg:py-[35px] py-[75px] lg:px-20 px-6;
