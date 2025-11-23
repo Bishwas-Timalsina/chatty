@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { APP } from "../../config/path";
 import Notification from "../../components/Global/Notificatin";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
   const {
@@ -37,7 +38,10 @@ const Login = () => {
     }, 3000);
   };
 
-  const { isLoading,error, postData } = usePostData();
+  const { isLoading, error, postData } = usePostData();
+
+  const { setAuthToken } = useAuth();
+
   const onSubmit = async (data: LoginFormInputs) => {
     const endPoint = "auth/login";
     try {
@@ -46,7 +50,7 @@ const Login = () => {
         const authenticationToken = response?.data?.accessToken;
         showNotification("User Registered Successfully", "success");
         if (authenticationToken) {
-          localStorage?.setItem("AUTH_TOKEN", authenticationToken);
+          setAuthToken(authenticationToken);
         }
         navigate(`/${APP}`);
       } else {

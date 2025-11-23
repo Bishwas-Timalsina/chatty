@@ -2,6 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { SocketProvider } from "../context/SocketProvider";
 import Header from "../pages/App/Component/Header";
 import Footer from "../pages/App/Component/Footer";
+import Sidebar from "../pages/App/Component/Sidebar";
 
 const ProtectedRoute = () => {
   const AUTH_TOKEN = localStorage?.getItem("AUTH_TOKEN");
@@ -14,7 +15,8 @@ const ProtectedRoute = () => {
       <div className="layout">
         <div className="layout-div max-h-screen h-screen flex flex-col justify-between">
           <Header />
-          <div className="component-padding">
+          <div className="h-full flex flex-row justify-between items-start">
+            <Sidebar />
             <Outlet />
           </div>
           <Footer />

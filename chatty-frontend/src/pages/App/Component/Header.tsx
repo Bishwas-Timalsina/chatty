@@ -1,11 +1,33 @@
+import { useEffect, useState } from "react";
 import { Tooltip } from "@mui/material";
 import Text from "../../../components/Atomic/Text";
+import useFetchData from "../../../hooks/useFetchData";
 import { useSocket } from "../../../context/SocketContext";
+import type { IUserDetail } from "../../../Interface/Interface";
 import { Circle, CircleQuestionMark, UserRound } from "lucide-react";
 
 const Header = () => {
-  const { socket, isConnected } = useSocket();
-  console.log(socket);
+  const { isConnected } = useSocket();
+  const [userDetail, setUserDetail] = useState<IUserDetail | null>();
+  const {fetchData } = useFetchData();
+
+  const handleFetchData = async () => {
+    const endPoint = "user";
+    try {
+      const response = await fetchData(endPoint);
+      if (response?.status === 200) {
+        setUserDetail(response?.data);
+      } else {
+        setUserDetail(null);
+      }
+    } catch (error: any) {
+      console.log(error?.message);
+    }
+  };
+  useEffect(() => {
+    handleFetchData();
+  }, []);
+
   return (
     <>
       <div className="bg-black text-secondary sticky top-0 z-50 py-6">
@@ -20,9 +42,14 @@ const Header = () => {
             </Tooltip>
             <div className="bg-secondary/60 flex justify-center items-center p-0.5 rounded-md gap-1.5 cursor-pointer">
               <UserRound size={20} />
-              <Text size="12px" weight="400" content="Username" />
+              <Text
+                size="14px"
+                weight="400"
+                className="capitalize"
+                content={userDetail?.data?.fullName}
+              />
               <Circle
-                size={16}
+                size={12}
                 color={isConnected ? "green" : "red"}
                 fill="green"
                 className="rounded-lg"

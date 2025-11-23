@@ -1,4 +1,4 @@
-import{Socket} from "socket.io-client"
+import { Socket } from "socket.io-client";
 
 import { type AlertColor } from "@mui/material";
 export interface ContactFormData {
@@ -25,7 +25,15 @@ export interface NotificationProps {
   onClose?: () => void;
 }
 
-export interface SocketContextType{
-  socket:Socket | null;
-  isConnected:boolean;
+export interface SocketContextType {
+  socket: Socket | null;
+  isConnected: boolean;
+}
+
+export interface IUserDetail {
+  data: {
+    fullName: string;
+    email: string;
+    id?: string;
+  };
 }

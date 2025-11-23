@@ -1,9 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import useFetchData from "../../../hooks/useFetchData";
 
 const UserDetail = () => {
-  return (
-    <div>UserDetail</div>
-  )
-}
+  const [userDetail, setUserDetail] = useState<any>(null);
+  const { isLoading, fetchData } = useFetchData();
 
-export default UserDetail
+  const handleFetchData = async () => {
+    const endPoint = "user";
+    try {
+      const response = await fetchData(endPoint);
+      setUserDetail(response?.data);
+    } catch (error: any) {
+      console.log(error?.message);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchData();
+  }, []);
+
+  return (
+    <>
+      <div>
+        {isLoading ? <p>Loading...</p> : <p>{userDetail?.data?.fullName} </p>}
+      </div>
+    </>
+  );
+};
+
+export default UserDetail;

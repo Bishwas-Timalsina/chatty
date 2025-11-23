@@ -12,6 +12,7 @@ import type {
   RegisterFormInputs,
 } from "../../Interface/Interface";
 import { APP } from "../../config/path";
+import { useAuth } from "../../context/AuthContext";
 
 const Register = () => {
   const {
@@ -31,6 +32,7 @@ const Register = () => {
 
   const navigate = useNavigate();
   const { isLoading, error, postData } = usePostData();
+  const { setAuthToken } = useAuth();
 
   const showNotification = (message: string, severity: "success" | "error") => {
     setNotif({ open: true, message, severity });
@@ -46,7 +48,7 @@ const Register = () => {
       if (response?.status === 200) {
         const authenticationToken = response?.data?.accessToken;
         if (authenticationToken) {
-          localStorage?.setItem("AUTH_TOKEN", authenticationToken);
+          setAuthToken(authenticationToken);
         }
         showNotification("User Registered Successfully", "success");
 
