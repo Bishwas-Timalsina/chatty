@@ -43,32 +43,4 @@ export const mockUsers: IUserItem[] = [
     time: "8:00",
     avatar: "/avatars/a5.png",
   },
-  {
-    id: 5,
-    name: "Aidan Phillips",
-    message: "This looks really good...",
-    time: "8:00",
-    avatar: "/avatars/a5.png",
-  },
-  {
-    id: 5,
-    name: "Aidan Phillips",
-    message: "This looks really good...",
-    time: "8:00",
-    avatar: "/avatars/a5.png",
-  },
-  {
-    id: 5,
-    name: "Aidan Phillips",
-    message: "This looks really good...",
-    time: "8:00",
-    avatar: "/avatars/a5.png",
-  },
-  {
-    id: 5,
-    name: "Aidan Phillips",
-    message: "This looks really good...",
-    time: "8:00",
-    avatar: "/avatars/a5.png",
-  },
 ];
