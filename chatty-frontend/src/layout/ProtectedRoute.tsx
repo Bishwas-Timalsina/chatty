@@ -10,17 +10,20 @@ const ProtectedRoute = () => {
   if (!AUTH_TOKEN) {
     return <Navigate to="/" replace />;
   }
+
   return (
     <SocketProvider>
-      <div className="layout">
-        <div className="layout-div max-h-screen h-screen flex flex-col justify-between">
-          <Header />
-          <div className="h-full flex flex-row justify-between items-start">
+      <div className="h-screen flex flex-col">
+        <Header />
+        <div className="flex flex-1 overflow-hidden">
+          <div className="h-full overflow-y-auto">
             <Sidebar />
+          </div>
+          <div className="flex-1 overflow-y-auto">
             <Outlet />
           </div>
-          <Footer />
         </div>
+        <Footer />
       </div>
     </SocketProvider>
   );

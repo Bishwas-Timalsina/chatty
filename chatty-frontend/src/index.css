@@ -21,6 +21,23 @@
   --color-accent: rgb(247, 94, 94);
 }
 
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
 .layout {
   @apply min-h-screen w-full bg-primary text-secondary;
 }
