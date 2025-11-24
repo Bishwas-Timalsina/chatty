@@ -1,23 +1,27 @@
-import { useState } from "react";
-import { mockUsers, type IUserItem } from "../../MockData/MockData";
+import { useEffect, useState } from "react";
 import Text from "../Atomic/Text";
 import { LogOut } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLogout } from "../../hooks/useLogout";
+import useFetchData from "../../hooks/useFetchData";
+import type { IUserItem } from "../../Interface/Interface";
 
 const UserList = () => {
   const [userSearch, setUserSearch] = useState<string>("");
-  const { setAuthToken } = useAuth();
+  const [userList, setUserList] = useState<IUserItem[]>([]);
+  const { handleLogout } = useLogout();
+  const { isLoading, fetchData } = useFetchData();
 
-  const navigate = useNavigate();
-  const filteredUserList = mockUsers?.filter((item: IUserItem) =>
-    item?.name?.toLowerCase().includes(userSearch.toLowerCase())
-  );
-  const handleLogout = () => {
-    //confirmation tab remaining
-    setAuthToken(null);
-    navigate("/");
+  const handleFetchData = async () => {
+    const endPoint = "user/list";
+    const response = await fetchData(endPoint);
+    setUserList(response?.data?.data);
   };
+  useEffect(() => {
+    handleFetchData();
+  }, []);
+  const filteredUserList = userList?.filter((user) =>
+    user?.fullName?.toLowerCase().includes(userSearch?.toLowerCase())
+  );
 
   return (
     <div className="w-full h-full bg-primary flex flex-col">
@@ -38,8 +42,8 @@ const UserList = () => {
       <div className="flex-1 overflow-y-auto">
         {filteredUserList.map((user: IUserItem) => (
           <div
-            key={user.id}
-            className="flex items-center justify-between p-3 hover:bg-primary/40 rounded-xl cursor-pointer"
+            key={user._id}
+            className="flex items-center justify-between p-3 hover:bg-secondary/10 rounded-sm cursor-pointer border-secondary border-b-2 border-r-0 border-l-0 border-t-0 my-1"
           >
             <div className="flex items-center gap-3">
               <svg
@@ -52,14 +56,14 @@ const UserList = () => {
               </svg>
 
               <div>
-                <div className="text-sm font-semibold">{user.name}</div>
-                <div className="text-xs text-gray-500 truncate w-40">
+                <div className="text-sm font-semibold">{user.fullName}</div>
+                {/* <div className="text-xs text-gray-500 truncate w-40">
                   {user.typing ? "typing..." : user.message}
-                </div>
+                </div> */}
               </div>
             </div>
 
-            <div className="text-xs text-gray-500">{user.time}</div>
+            {/* <div className="text-xs text-gray-500">{user.time}</div> */}
           </div>
         ))}
       </div>

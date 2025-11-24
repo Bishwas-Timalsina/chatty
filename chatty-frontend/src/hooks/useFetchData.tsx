@@ -11,7 +11,7 @@ const useFetchData = () => {
 
   const fetchData = async (endPoint: string) => {
     try {
-      setIsLoading(false);
+      setIsLoading(true);
       const response = await axios.get(`${CONSTANTS?.BASE_URL}/${endPoint}`, {
         headers: {
           Authorization: `Bearer ${AUTH_TOKEN}`,

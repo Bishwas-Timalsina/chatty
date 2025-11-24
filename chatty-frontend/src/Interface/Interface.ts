@@ -37,3 +37,8 @@ export interface IUserDetail {
     id?: string;
   };
 }
+export interface IUserItem {
+  _id: number;
+  fullName: string;
+  typing?: boolean;
+}

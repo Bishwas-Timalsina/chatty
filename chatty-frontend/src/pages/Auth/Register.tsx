@@ -51,8 +51,6 @@ const Register = () => {
           setAuthToken(authenticationToken);
         }
         showNotification("User Registered Successfully", "success");
-
-        console.log(response);
         navigate(`/${APP}`);
       } else {
         const errorMessage =
