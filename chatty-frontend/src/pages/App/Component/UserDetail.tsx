@@ -10,6 +10,7 @@ const UserDetail = () => {
     try {
       const response = await fetchData(endPoint);
       setUserDetail(response?.data);
+      localStorage?.setItem("USER_NAME", response?.fullName);
     } catch (error: any) {
       console.log(error?.message);
     }

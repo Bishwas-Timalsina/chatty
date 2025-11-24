@@ -9,13 +9,14 @@ import { Circle, CircleQuestionMark, UserRound } from "lucide-react";
 const Header = () => {
   const { isConnected } = useSocket();
   const [userDetail, setUserDetail] = useState<IUserDetail | null>();
-  const {fetchData } = useFetchData();
+  const { fetchData } = useFetchData();
 
   const handleFetchData = async () => {
     const endPoint = "user";
     try {
       const response = await fetchData(endPoint);
       if (response?.status === 200) {
+        localStorage?.setItem("USER_NAME", response?.data?.data?.fullName);
         setUserDetail(response?.data);
       } else {
         setUserDetail(null);
