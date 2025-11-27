@@ -1,4 +1,4 @@
-import { Server as SocketServer } from "socket.io";
+ import { Server as SocketServer } from "socket.io";
 import jwt from "jsonwebtoken";
 
 export const initSocket = (server: any) => {

@@ -42,3 +42,10 @@ export interface IUserItem {
   fullName: string;
   typing?: boolean;
 }
+export interface IMessage {
+  id: number;
+  text: string;
+  time: string;
+  sender: "me" | "other";
+  avatar: string;
+}

@@ -4,12 +4,15 @@ import { LogOut } from "lucide-react";
 import { useLogout } from "../../hooks/useLogout";
 import useFetchData from "../../hooks/useFetchData";
 import type { IUserItem } from "../../Interface/Interface";
+import { Link } from "react-router-dom";
+import { APP, MESSAGE } from "../../config/path";
+import { StyledMessageBox } from "../../Styled/Styled";
 
 const UserList = () => {
   const [userSearch, setUserSearch] = useState<string>("");
   const [userList, setUserList] = useState<IUserItem[]>([]);
   const { handleLogout } = useLogout();
-  const { isLoading, fetchData } = useFetchData();
+  const { fetchData } = useFetchData();
 
   const handleFetchData = async () => {
     const endPoint = "user/list";
@@ -26,12 +29,11 @@ const UserList = () => {
   return (
     <div className="w-full h-full bg-primary flex flex-col">
       <div className="p-3 border-b">
-        <input
+        <StyledMessageBox
           type="text"
           placeholder="Search"
           value={userSearch}
           onChange={(e) => setUserSearch(e.target.value)}
-          className="w-full px-3 py-2 rounded-xl border focus:outline-none"
         />
       </div>
 
@@ -41,7 +43,8 @@ const UserList = () => {
 
       <div className="flex-1 overflow-y-auto">
         {filteredUserList.map((user: IUserItem) => (
-          <div
+          <Link
+            to={`/${APP}/${MESSAGE}/${user?._id}`}
             key={user._id}
             className="flex items-center justify-between p-3 hover:bg-secondary/10 rounded-sm cursor-pointer border-secondary border-b-2 border-r-0 border-l-0 border-t-0 my-1"
           >
@@ -64,7 +67,7 @@ const UserList = () => {
             </div>
 
             {/* <div className="text-xs text-gray-500">{user.time}</div> */}
-          </div>
+          </Link>
         ))}
       </div>
       <div

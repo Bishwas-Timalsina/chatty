@@ -1,5 +1,14 @@
 import { Navigate, type RouteObject } from "react-router-dom";
-import { ABOUT, APP, AUTH, CONTACT, INTRO, LOGIN, MESSAGE, REGISTR } from "./path";
+import {
+  ABOUT,
+  APP,
+  AUTH,
+  CONTACT,
+  INTRO,
+  LOGIN,
+  MESSAGE,
+  REGISTR,
+} from "./path";
 import AuthLayout from "../layout/AuthLayout";
 import AuthPage from "../pages/Auth/AuthPage";
 import ProtectedRoute from "../layout/ProtectedRoute";
@@ -8,6 +17,7 @@ import NotFound from "../pages/NotFound/NotFound";
 import Landing from "../pages/Landing/Landing";
 import AboutUs from "../pages/Landing/AboutUs";
 import ContactUs from "../pages/Landing/ContactUs/ContactUs";
+import MessageBox from "../pages/App/Component/MessageBox";
 
 export const AuthRoutes: RouteObject = {
   path: INTRO,
@@ -43,6 +53,10 @@ export const AppRoutes: RouteObject = {
     {
       path: MESSAGE,
       element: <App />,
+    },
+    {
+      path: `${MESSAGE}/:id`,
+      element: <MessageBox />,
     },
   ],
 };
