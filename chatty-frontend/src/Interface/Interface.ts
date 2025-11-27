@@ -43,9 +43,9 @@ export interface IUserItem {
   typing?: boolean;
 }
 export interface IMessage {
-  id: number;
+  senderId: string;
   text: string;
-  time: string;
+  createdAt?: string;
   sender: "me" | "other";
-  avatar: string;
+  avatar?: string;
 }

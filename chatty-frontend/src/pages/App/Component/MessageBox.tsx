@@ -3,17 +3,24 @@ import { Avatar } from "@mui/material";
 import { SendButton, StyledMessageBox } from "../../../Styled/Styled";
 import { useParams } from "react-router-dom";
 import useFetchData from "../../../hooks/useFetchData";
-import { useEffect, useState } from "react";
-import type { IUserDetail } from "../../../Interface/Interface";
+import { useContext, useEffect, useState } from "react";
+import type { IMessage, IUserDetail } from "../../../Interface/Interface";
 import Text from "../../../components/Atomic/Text";
-import { messages } from "../../../MockData/MockData";
+import { SocketContext } from "../../../context/SocketContext";
+import { formatTimeStamp } from "../../../utils/formateDate";
 
 const MessageBox = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id: recieverId } = useParams<{ id: string }>();
   const [userInfo, setUserInfo] = useState<IUserDetail | null>(null);
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [messageText, setMessageText] = useState("");
+
+  const { socket } = useContext(SocketContext);
+
+  //User IN Message Box detail Fetch
   const { fetchData } = useFetchData();
   const handleUserDetail = async () => {
-    const endPoint = `user/${id}`;
+    const endPoint = `user/${recieverId}`;
     try {
       const userDetail = await fetchData(endPoint);
       console.log(userDetail?.data?.data);
@@ -22,10 +29,59 @@ const MessageBox = () => {
       console.log(error?.message);
     }
   };
+
+  useEffect(() => {
+    if (!socket) return;
+    const handleReceive = (msg: IMessage) => {
+      if (msg?.senderId === recieverId) {
+        setMessages((prev: any) => [...prev, { ...msg, sender: "other" }]);
+      }
+    };
+    socket.on("receive_message", handleReceive);
+
+    return () => {
+      socket.off("receive_message", handleReceive);
+    };
+  }, [socket, recieverId]);
+
+  const handleSend = () => {
+    if (!messageText?.trim() || !socket) return;
+    const msg: IMessage = {
+      senderId: localStorage.getItem("SENDER_ID")!,
+      text: messageText,
+      sender: "me",
+    };
+    socket?.emit("send_private_message", { recieverId, text: messageText });
+    setMessages((prev: any) => [...prev, msg]);
+    setMessageText("");
+  };
+
+  //fetch messsage history
+
+  const fetchMessageHistory = async () => {
+    const senderId = localStorage.getItem("SENDER_ID");
+    const endPoint = `messages?senderId=${senderId}&recieverId=${recieverId}`;
+
+    try {
+      const messageHistory = await fetchData(endPoint);
+      if (messageHistory?.data?.messages) {
+        const formattedMessages: IMessage[] = messageHistory.data.messages.map(
+          (msg: any) => ({
+            ...msg,
+            sender: msg.sender.toString() === senderId ? "me" : "other",
+          })
+        );
+        setMessages(formattedMessages);
+      }
+      console.log(messageHistory);
+    } catch (error: any) {
+      console.log(error?.message);
+    }
+  };
   useEffect(() => {
     handleUserDetail();
-  }, [id]);
-
+    fetchMessageHistory();
+  }, [recieverId]);
   return (
     <div className="w-full h-full bg-primary flex flex-col border border-black shadow-sm">
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
@@ -47,7 +103,7 @@ const MessageBox = () => {
       <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
         {messages.map((msg) => (
           <div
-            key={msg.id}
+            key={msg.senderId}
             className={`flex items-end gap-3 ${
               msg.sender === "me" ? "justify-end" : "justify-start"
             }`}
@@ -71,7 +127,7 @@ const MessageBox = () => {
                 lineHeight="1rem"
                 className="mt-1 opacity-70 text-right"
               >
-                {msg.time}
+                {formatTimeStamp(msg?.createdAt)}
               </Text>
             </div>
 
@@ -83,7 +139,13 @@ const MessageBox = () => {
       </div>
 
       <div className="flex  gap-2 border-t border-gray-200 p-4">
-        <StyledMessageBox type="text" placeholder="Type a message…" />
+        <StyledMessageBox
+          type="text"
+          placeholder="Type a message…"
+          value={messageText}
+          onChange={(e: any) => setMessageText(e.target.value)}
+          onKeyDown={(e: any) => e.key === "Enter" && handleSend()}
+        />
         <SendButton>
           <SendHorizonal />
         </SendButton>

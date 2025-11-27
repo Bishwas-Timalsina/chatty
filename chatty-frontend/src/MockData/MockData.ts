@@ -1,4 +1,6 @@
-export const messages: Message[] = [
+import type { IMessage } from "../Interface/Interface";
+
+export const messages: IMessage[] = [
   {
     id: 1,
     text: "Any updates on interview schedules?",

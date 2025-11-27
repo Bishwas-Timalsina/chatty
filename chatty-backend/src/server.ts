@@ -8,9 +8,10 @@ import appAuth from "./middleware/appAuth";
 import userRouter from "./modules/user/user.routes";
 import authRouter from "./modules/auth/auth.routes";
 
-
+import cron from "node-cron";
 import { initSocket } from "./websocket/Socket";
 
+import { deleteOldMessages } from "./modules/messages/controller/deleteOldMessages";
 
 dotenv.config();
 const app = express();
@@ -25,22 +26,24 @@ mongoose
   .connect(process.env.DB_URL!, {})
   .then(() => {
     console.log("Database Connected Successfully");
+    cron.schedule("0 * * * *", () => {
+      console.log("Running message Cleanup");
+      deleteOldMessages();
+    });
   })
+
   .catch((e: any) => {
     console.log("Error connecting the database");
   });
 
 import "./models/userRegisterModel";
 import errorHandler from "./handlers/errorHandlers";
-
-// import messageRouter from "./modules/message/message.routes";
+import messageRouter from "./modules/messages/messages.routes";
 
 app.use("/api/v1/auth", authRouter);
 app.use(appAuth);
 app.use("/api/v1/user", userRouter);
-// app.use("/api/v1/message", messageRouter);
-
-// app.use("/api/v1/message", userMessageRouter);
+app.use("/api/v1/messages", messageRouter);
 
 app.use(errorHandler);
 server.listen(PORT, () => {

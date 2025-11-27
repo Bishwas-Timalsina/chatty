@@ -33,7 +33,6 @@ const reusableMongoose = ({
       })
     );
     mongooseQuery = mongooseQuery.find({ $or: searchArray });
-    // console.log("This is search Array",searchArray)
   }
 
   // Working on limits

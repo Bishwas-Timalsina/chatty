@@ -17,6 +17,7 @@ const Header = () => {
       const response = await fetchData(endPoint);
       if (response?.status === 200) {
         localStorage?.setItem("USER_NAME", response?.data?.data?.fullName);
+        localStorage?.setItem("SENDER_ID", response?.data?.data?.id);
         setUserDetail(response?.data);
       } else {
         setUserDetail(null);
